@@ -15,6 +15,13 @@ struct Employee{
 };
 
 int main(){
+    //检查是否有文件
+    FILE *fp;
+    fp = fopen("data.txt","r");
+    if(fp == NULL){
+        //创建文件
+        fp = fopen("data.txt","w");
+    }
     for(;;){
         printf("**************菜单选项**************\n");
         printf("1.添加员工信息\n");
