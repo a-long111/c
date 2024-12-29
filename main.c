@@ -3,15 +3,14 @@
 #include <string.h>
 #include <stdlib.h>
 
-// 修改 Employee 结构体定义
 struct Employee {
-    int uid;            // 修改：移除数组，改为单个整数
-    char name[32];      // 增加名字长度限制
+    int uid;
+    char name[32];
     bool gender;
     bool Marital_status;
     int degree;
-    char department[32]; // 增加部门名称长度限制
-    char position[32];   // 增加职位名称长度限制
+    char department[32];
+    char position[32];
     int salary;
     int length_of_service;
 };
@@ -20,15 +19,12 @@ struct Employee {
 struct Employee employees[MAX_EMPLOYEES];
 int employee_count = 0;
 
-// 添加数据验证函数
 bool validate_uid(int uid) {
-    // 检查ID是否已存在
     for (int i = 0; i < employee_count; i++) {
         if (employees[i].uid == uid) {
             return false;
         }
     }
-    // 检查ID范围
     return uid > 0 && uid < 10000;
 }
 
@@ -49,11 +45,9 @@ bool validate_length_of_service(int length) {
     return length >= 0 && length <= 50;
 }
 
-// 修改 add_employee 函数
 void add_employee(struct Employee *employee) {
     printf("请输入员工信息:\n");
     
-    // 验证员工编号
     do {
         printf("员工编号(1-9999): ");
         scanf("%d", &employee->uid);
@@ -62,7 +56,6 @@ void add_employee(struct Employee *employee) {
         }
     } while (!validate_uid(employee->uid));
 
-    // 验证员工姓名
     do {
         printf("员工姓名(2-32字符): ");
         scanf("%s", employee->name);
@@ -71,7 +64,6 @@ void add_employee(struct Employee *employee) {
         }
     } while (!validate_name(employee->name));
 
-    // 验证性别
     do {
         printf("员工性别(1为男,0为女): ");
         scanf("%d", &employee->gender);
@@ -80,7 +72,6 @@ void add_employee(struct Employee *employee) {
         }
     } while (employee->gender != 0 && employee->gender != 1);
 
-    // 验证婚姻状况
     do {
         printf("员工婚姻状况(1为已婚,0为未婚): ");
         scanf("%d", &employee->Marital_status);
@@ -89,7 +80,6 @@ void add_employee(struct Employee *employee) {
         }
     } while (employee->Marital_status != 0 && employee->Marital_status != 1);
 
-    // 验证学历
     do {
         printf("员工学历(1为高中,2为大专,3为本科,4为硕士,5为博士): ");
         scanf("%d", &employee->degree);
@@ -104,7 +94,6 @@ void add_employee(struct Employee *employee) {
     printf("员工职位: ");
     scanf("%s", employee->position);
 
-    // 验证工资
     do {
         printf("员工工资(0-1000000): ");
         scanf("%d", &employee->salary);
@@ -113,7 +102,6 @@ void add_employee(struct Employee *employee) {
         }
     } while (!validate_salary(employee->salary));
 
-    // 验证工龄
     do {
         printf("员工工龄(0-50): ");
         scanf("%d", &employee->length_of_service);
@@ -131,10 +119,9 @@ void add_employee(struct Employee *employee) {
     }
 }
 
-// 修改查找员工的逻辑
 void delete_employee(int uid) {
     for (int i = 0; i < employee_count; i++) {
-        if (employees[i].uid == uid) {  // 修改：直接比较整数
+        if (employees[i].uid == uid) {
             for (int j = i; j < employee_count - 1; j++) {
                 employees[j] = employees[j + 1];
             }
@@ -146,10 +133,9 @@ void delete_employee(int uid) {
     printf("未找到该员工!\n");
 }
 
-// 修改其他函数中的 uid 比较
 void modify_employee(int uid) {
     for (int i = 0; i < employee_count; i++) {
-        if (employees[i].uid == uid) {  // 修改：直接比较整数
+        if (employees[i].uid == uid) {
             printf("请输入新的员工信息:\n");
             add_employee(&employees[i]);
             return;
@@ -160,7 +146,7 @@ void modify_employee(int uid) {
 
 void query_employee(int uid) {
     for (int i = 0; i < employee_count; i++) {
-        if (employees[i].uid == uid) {  // 修改：直接比较整数
+        if (employees[i].uid == uid) {
             printf("\n员工信息:\n");
             printf("编号: %d\n", employees[i].uid);
             printf("姓名: %s\n", employees[i].name);
@@ -177,7 +163,6 @@ void query_employee(int uid) {
     printf("未找到该员工!\n");
 }
 
-// 修改文件存储格式为文本格式，提高可读性
 void save_to_file() {
     FILE *fp = fopen("employees.txt", "w");
     if (fp == NULL) {
@@ -202,7 +187,6 @@ void save_to_file() {
     printf("保存成功!\n");
 }
 
-// 修改文件读取函数以匹配新的存储格式
 void load_from_file() {
     FILE *fp = fopen("employees.txt", "r");
     if (fp == NULL) {
@@ -228,7 +212,6 @@ void load_from_file() {
     printf("读取成功!\n");
 }
 
-// 添加显示所有员工信息的函数
 void display_all_employees() {
     if (employee_count == 0) {
         printf("暂无员工信息！\n");
@@ -259,7 +242,6 @@ void display_all_employees() {
     }
 }
 
-// 修改查询功能，支持多种查询方式
 void query_employee_menu() {
     printf("\n查询方式：\n");
     printf("1. 按工号查询\n");
@@ -311,7 +293,6 @@ void query_employee_menu() {
     }
 }
 
-// 修改 main 函数中的菜单
 int main() {
     FILE *fp = fopen("employees.txt", "r");
     if (fp != NULL) {
@@ -319,12 +300,11 @@ int main() {
         fclose(fp);
     }
     else {
-        //创建文件
         fp = fopen("employees.txt", "w");
     }
 
     while (1) {
-        system("cls");  // 清屏
+        system("cls");
         printf("\n**************员工管理系统**************\n");
         printf("1. 增加员工信息\n");
         printf("2. 修改员工信息\n");
@@ -380,14 +360,14 @@ int main() {
                     save_to_file();
                 }
                 printf("感谢使用！\n");
-                system("pause");  // 添加暂停
+                system("pause");
                 return 0;
             default:
                 printf("输入错误,请重新输入!\n");
         }
         
         printf("\n按任意键继续...");
-        getchar();  // 清除之前的回车
-        getchar();  // 等待用户按键
+        getchar();
+        getchar();
     }
 }
